@@ -1,0 +1,31 @@
+{% extends "index.jinja2" %}
+{% block content %}
+<div id="djs_tab_div" class="row-fluid">
+	<div class="page-header">
+			<h2>Find your DJ</h2>
+	</div>
+	<div>
+		<table id="dj_table" class="table well">
+			<thead>
+				<td>DJ</td>
+				<td>Venue</td>
+				<td></td>
+			</thead>
+			{% for dj, queue in records %}
+			<tbody>
+				<td>{{ dj.name }}</td>
+				<td>{{ dj.bio }}</td>
+				<td><a href='/queue/{{queue.id}}' class="btn btn-mini btn-primary" type="button">Select</a></td>
+			</tbody>
+			{% endfor %}
+		</table>
+
+	</div>
+
+	<div class="row"></div>
+
+	<div class="well">
+		<p><strong>ReQuest</strong> simplifies the interaction between DJs and their audience by giving them the power to handle requested music using the cloud and allowing the audience to vote on the music.</p>
+	</div>
+</div>
+{% endblock %}

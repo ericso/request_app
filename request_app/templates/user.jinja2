@@ -1,0 +1,27 @@
+{% extends "index.jinja2" %}
+{% block content %}
+<div id="user_view" class="row-fluid">
+	<div class="page-header">
+			<h1>{{user.name}}</h1> &nbsp <img src="..." class="img-rounded">
+	</div>
+
+	<div class="">
+		<form method="POST">
+			<fieldset>
+				<label>Email</label>
+				<input type="text" name="email" placeholder='{{user.email}}'>
+				<label>Password</label>
+				<input type="text" name="password" placeholder='{{user.password}}'>
+				<button type="submit" class="btn">Submit</button>
+			</fieldset>
+		</form>
+	</div>
+
+
+	<div class="row"></div>
+
+	<div class="well">
+		<p><strong>ReQuest</strong> simplifies the interaction between DJs and their audience by giving them the power to handle requested music using the cloud and allowing the audience to vote on the music.</p>
+	</div>
+</div>
+{% endblock %}

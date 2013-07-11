@@ -1,0 +1,27 @@
+{% extends "index.jinja2" %}
+{% block content %}
+<div id="login_tab_div" class="row-fluid">
+	<div class="page-header">
+			<h1>Welcome!  <small>Ready to make a <strong>ReQuest</strong>?</small></h1>
+	</div>
+	<h4>Please log in:</h4>
+
+	<div>
+		<form method="POST">
+			<fieldset>
+				<label>Username</label>
+				<input type="text" name="username">
+				<label>Password</label>
+				<input type="password" name="password">
+				<button type="submit" class="btn">Login</button>
+			</fieldset>
+		</form>
+	</div>
+
+	<div class="row"></div>
+
+	<div class="well">
+		<p><strong>ReQuest</strong> simplifies the interaction between DJs and their audience by giving them the power to handle requested music using the cloud and allowing the audience to vote on the music.</p>
+	</div>
+</div>
+{% endblock %}

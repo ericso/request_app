@@ -1,0 +1,21 @@
+<div id="search_tab_div" class="row-fluid " style="display: none;">			
+	<div class="row-fluid ">
+		<h3>Search Results  <small id="number_found">{{result_count}}</small></h3>
+		<div id="results_list">
+			<table id="results_table" class="table well">
+				<thead>
+					<td>Title</td>
+					<td>Artist</td>
+					<td></td>
+				</thead>
+				{% for song in songs %}
+				<tbody>
+					<td>{{ song.title }}</td>
+					<td>{{ song.artist }}</td>
+					<td><a href='/queue/{{song.id}}' class="btn btn-mini btn-primary" type="button">Add</a></td>
+				</tbody>
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+</div>

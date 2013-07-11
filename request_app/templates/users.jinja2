@@ -1,0 +1,35 @@
+{% extends "index.jinja2" %}
+{% block content %}
+<div id="users_view" class="row-fluid">
+	<h4>Showing Users</h4>
+	<div>
+		<table id="users_table" class="table well">
+			<thead>
+				<td>User ID</td>
+				<td>Name</td>
+				<td>Email</td>
+				<td>Password</td>
+				<td>Join Date</td>
+				<td></td>
+			</thead>
+			{% for user in users %}
+			<tbody>
+				<td>{{ user.id }}</td>
+				<td>{{ user.name }}</td>
+				<td>{{ user.email }}</td>
+				<td>{{ user.password }}</td>
+				<td>{{ user.join_date }}</td>
+				<td><a href='/user/{{user.id}}' class="btn btn-mini btn-primary" type="button">View</a></td>
+			</tbody>
+			{% endfor %}
+		</table>
+
+	</div>
+
+	<div class="row"></div>
+
+	<div class="well">
+		<p><strong>ReQuest</strong> simplifies the interaction between DJs and their audience by giving them the power to handle requested music using the cloud and allowing the audience to vote on the music.</p>
+	</div>
+</div>
+{% endblock %}
