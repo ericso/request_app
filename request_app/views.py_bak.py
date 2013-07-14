@@ -7,7 +7,6 @@
 from pyramid.security import authenticated_userid
 from pyramid.exceptions import Forbidden
 from pyramid.view import view_config
-from pyramid.httpexceptions import HTTPFound
 
 # Database object models
 from .models import (
@@ -104,9 +103,19 @@ def queue_view(request):
 
 	# Check to see if POST
 	if  request.environ['REQUEST_METHOD'] == 'POST':
-		# Redirect to a results view
-		url = request.route_url('results', search_text=request.params['search_text'], queue_id=queue_id)
-		return HTTPFound(location=url)
+		# Redirect to a results view and override template
+		request.override_renderer = 'results.jinja2'
+		query_songs = results_view(request)
+		print('got the results back from results_view:')
+		print(query_songs)
+		
+		return {
+			'app_name': 'ReQuest',
+			'userid': userid,
+			'queueid': queue_id,
+			'songs': query_songs,
+			'count': len(query_songs)
+		}
 
 	return {
 		'app_name': 'ReQuest',
@@ -115,26 +124,11 @@ def queue_view(request):
 		'songs': songs
 	}
 
-@view_config(route_name='results', renderer='results.jinja2')
 def results_view(request):
 	print('In results_view...')
-	# Check if a user is logged in
-	userid = authenticated_userid(request)
-	if userid is None:
-		raise Forbidden()
-
-	# Get the queue id from which this search was made
-	queue_id = request.matchdict['queue_id']
-	
-	# Check to see if POST. This means user performed another query in the results view
-	if  request.environ['REQUEST_METHOD'] == 'POST':
-		# Redirect to a results view
-		url = request.route_url('results', search_text=request.params['search_text'], queue_id=queue_id)
-		return HTTPFound(location=url)
-
 	# Grab the search text from the form
-	search_text = request.matchdict['search_text']
-	print(search_text)
+	search_text = request.params['search_text']
+	print(request.params['search_text'])
 
 	# Query the DB for songs
 	query_songs_title = DBSession.query(Song).filter(Song.title.like('%'+search_text+'%')).all()
@@ -142,14 +136,9 @@ def results_view(request):
 	query_songs = query_songs_artist + query_songs_title
 	query_songs = list(OrderedDict.fromkeys(query_songs))
 
+	print(query_songs)
 
-	return {
-		'app_name': 'ReQuest',
-		'userid': userid,
-		'queueid': queue_id,
-		'songs': query_songs,
-		'count': len(query_songs)
-	}
+	return query_songs
 
 @view_config(route_name='songadd')
 def songadd_view(request):
@@ -174,6 +163,8 @@ def songadd_view(request):
 	queue.songs.append(song)
 	print('association added')
 
+	# DBSession.commit()
+	print('commited to database')
 
 	# Grab the songs for this queue
 	# songs = DBSession.query(Song).filter_by(id=song_id).filter(Song.queues.any()).all()
@@ -182,12 +173,7 @@ def songadd_view(request):
 	# print(songs)
 	# print('afterwards...')
 
-	# queue_view(request)
-
-	# Redirect to the queue view
-	url = request.route_url('queue', queue_id=queue_id)
-	return HTTPFound(location=url)
-
+	queue_view(request)
 	# return {
 	# 	'app_name': 'ReQuest',
 	# 	'userid': userid,

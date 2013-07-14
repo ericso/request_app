@@ -43,9 +43,11 @@ def main(global_config, **settings):
 	# config.add_route('djs', '/djs')
 	config.add_route('dj', '/dj/{dj_id}')
 	config.add_route('queue', '/queue/{queue_id}')
+	config.add_route('results', '/results/{search_text}/{queue_id}')
+	config.add_route('songadd', '/songadd/{queue_id}/{song_id}')
 	config.add_route('users', '/users')
 	config.add_route('user', '/user/{user_id}')
-	config.add_route('results', '/results')
+	# config.add_route('results', '/results')
 	config.scan()
 
 	return config.make_wsgi_app()

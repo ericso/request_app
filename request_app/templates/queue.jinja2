@@ -4,7 +4,8 @@
 	<div>
 		<form method="POST">
 			<input class="" id="search_input" type="text" name="search_text" placeholder="search for a song or artist...">
-	 		<button class="btn" type="submit">Search</button>
+	 		<!-- <button class="btn" type="submit">Search</button> -->
+	 		<a href='/results' class="btn" type="button submit">Search</a>
  		</form>
 	</div>
 	<table id="queue_table" class="table well">
@@ -15,7 +16,7 @@
 			<td>Vote</td>
 			<td></td>
 		</thead>
-		{% for song in queue %}
+		{% for song in songs %}
 		<tbody>
 			<td></td>
 			<td>{{ song.title }}</td>
