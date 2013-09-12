@@ -56,18 +56,12 @@ class DJ(Base):
 		self.name = name
 		self.bio = bio
 
-class SongToQueue(Base):
-	__tablename__ = 'songs_to_queues'
-	song_id = Column(Integer, ForeignKey('songs.id'), primary_key=True)
-	queue_id = Column(Integer, ForeignKey('queues.id'), primary_key=True)
-	votes = Column(Integer)
-	song = relationship("Song")
 
-# songs_to_queues_table = Table('songs_to_queues', Base.metadata,
-# 	Column('song_id', Integer, ForeignKey('songs.id')),
-# 	Column('queue_id', Integer, ForeignKey('queues.id')),
-# 	Column('votes', Integer)
-# )
+songs_to_queues_table = Table('songs_to_queues', Base.metadata,
+	Column('song_id', Integer, ForeignKey('songs.id')),
+	Column('queue_id', Integer, ForeignKey('queues.id')),
+	Column('votes', Integer)
+)
 
 
 class Song(Base):
@@ -78,6 +72,8 @@ class Song(Base):
 	artist = Column(Text)
 	album = Column(Text)
 	year = (Integer)
+
+	# queues = relationship('Queue', secondary=songs_to_queues_table, backref='songs')
 
 	def __init__(self, title, artist, album, year):
 		self.title = title
@@ -100,8 +96,7 @@ class Queue(Base):
 	venue = relationship('Venue', backref=backref('venues', order_by=id))
 
 	# Each Queue has many Songs
-	# songs = relationship('Song', secondary=songs_to_queues_table, backref='queues')
-	songs = relationship("SongToQueue", backref="queues")
+	songs = relationship('Song', secondary=songs_to_queues_table, backref='queues')
 
 	def __init__(self, dj_id, venue_id, date):
 		self.dj_id = dj_id

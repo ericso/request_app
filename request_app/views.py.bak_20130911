@@ -15,8 +15,7 @@ from .models import (
 	DJ,
 	Song,
 	Queue,
-	User,
-	SongToQueue
+	User
 )
 
 # For Jinja2 Templates
@@ -101,8 +100,7 @@ def queue_view(request):
 
 	# Grab the songs for this queue
 	# songs = DBSession.query(Song).join(Queue, Song.queues).filter(Song.queues.any()).all()
-	# songs = DBSession.query(Song).join(Queue, Song.queues).filter(Queue.id == queue_id).all()
-	songs = DBSession.query(SongToQueue).filter(SongToQueue.queue_id == queue_id and SongToQueue.song_id == song_id).all()
+	songs = DBSession.query(Song).join(Queue, Song.queues).filter(Queue.id == queue_id).all()
 
 	# Check to see if POST
 	if  request.environ['REQUEST_METHOD'] == 'POST':
@@ -171,22 +169,12 @@ def songadd_view(request):
 	queue = DBSession.query(Queue).filter_by(id=queue_id).first()
 	print('found queue')
 	print(queue)
-
-	# Association table
-	a = SongToQueue(votes=0)
-
-	# Find the song
 	song = DBSession.query(Song).filter_by(id=song_id).first()
-	a.song = song
 	print('found song')
 	print(song)
 
-	# Append the association
-	queue.songs.append(a)
-
-	# queue.songs.append(song)
-	# print('association added')
-
+	queue.songs.append(song)
+	print('association added')
 
 
 	# Grab the songs for this queue
